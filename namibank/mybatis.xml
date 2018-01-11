@@ -1,0 +1,299 @@
+<mapper namespace="com.namibank.df.mallOrder.dao.TorderMapper">
+    <sql id="queryConditionSql">
+        <where>
+            AND ao.`is_valid` != 0
+            <if test="phone != null">
+                AND a.phone = #{phone}
+            </if>
+            <if test="province != null">
+                AND ao.province = #{province}
+            </if>
+            <if test="name != null">
+                AND a.name = #{name}
+            </if>
+            <if test="orderSource != null">
+                AND ao.order_source = #{orderSource}
+            </if>
+            <if test="auditStatus != null">
+                AND a.audit_status = #{auditStatus}
+            </if>
+            <if test="oprtorDealResult != null">
+                AND a.oprtor_deal_result = #{oprtorDealResult}
+            </if>
+            <if test="taskStatus != null">
+                AND a.task_status = #{taskStatus}
+            </if>
+            <if test="assignee != null">
+                AND a.assignee = #{assignee}
+            </if>
+            <if test="isFinishFirstCall != null and isFinishFirstCall">
+                AND a.first_call_time IS NOT NULL
+            </if>
+            <if test="isFinishFirstCall != null and !isFinishFirstCall">
+                AND a.first_call_time IS NULL
+            </if>
+            <if test="queryOrderTimeBegin != null">
+                <![CDATA[
+                 AND ao.order_time >= #{queryOrderTimeBegin}
+              ]]>
+            </if>
+            <if test="queryOrderTimeEnd != null">
+                <![CDATA[
+                  AND ao.order_time <= #{queryOrderTimeEnd}
+                ]]>
+            </if>
+            <if test="auditTimeBegin != null">
+                <![CDATA[
+                 AND a.finish_time >= #{auditTimeBegin}
+              ]]>
+            </if>
+            <if test="auditTimeEnd != null">
+                <![CDATA[
+                  AND a.finish_time <= #{auditTimeEnd}
+                ]]>
+            </if>
+        </where>
+        ORDER BY
+        <choose>
+            <when test='orderBy == "orderTime"'>
+                ao.order_time
+            </when>
+            <otherwise>
+                a.create_time
+            </otherwise>
+        </choose>
+    </sql>
+
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.namibank.df.mallOrder.pojo.TorderTransReq">
+        insert into xx_order_trans_req
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            id,
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="bizNo != null">
+                biz_no,
+            </if>
+            <if test="branch != null">
+                branch,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="orderSn != null">
+                order_sn,
+            </if>
+            <if test="respCode != null">
+                resp_code,
+            </if>
+            <if test="space1 != null">
+                space1,
+            </if>
+            <if test="space2 != null">
+                space2,
+            </if>
+            <if test="space3 != null">
+                space3,
+            </if>
+            <if test="transNo != null">
+                trans_no,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="reqMessage != null">
+                req_message,
+            </if>
+            <if test="respMessage != null">
+                resp_message,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            #{id,jdbcType=BIGINT},
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="bizNo != null">
+                #{bizNo,jdbcType=VARCHAR},
+            </if>
+            <if test="branch != null">
+                #{branch,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=BIGINT},
+            </if>
+            <if test="orderSn != null">
+                #{orderSn,jdbcType=VARCHAR},
+            </if>
+            <if test="respCode != null">
+                #{respCode,jdbcType=VARCHAR},
+            </if>
+            <if test="space1 != null">
+                #{space1,jdbcType=VARCHAR},
+            </if>
+            <if test="space2 != null">
+                #{space2,jdbcType=VARCHAR},
+            </if>
+            <if test="space3 != null">
+                #{space3,jdbcType=VARCHAR},
+            </if>
+            <if test="transNo != null">
+                #{transNo,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="reqMessage != null">
+                #{reqMessage,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="respMessage != null">
+                #{respMessage,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+
+    <sql id="Example_Where_Clause" >
+        <!--
+          WARNING - @mbggenerated
+          This element is automatically generated by MyBatis Generator, do not modify.
+        -->
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+
+
+    <!--为什么用$-->
+    <sql id="listOrder">
+        <if test="orderFields != null and orderFields.size >0">
+            order by
+            <foreach collection="orderFields" separator="," item="orderField">
+                ${orderField.fieldName} ${orderField.order}
+            </foreach>
+        </if>
+    </sql>
+
+    <select id="queryPageList" resultMap="pageMap" parameterType="HashMap">
+        select app.id, app.create_time, audit.first_call_time, audit.owner_id, app.name, app.mobile, app.idcard, app.submit_time,app.org_phone,
+        app.province , audit.owner_id, audit.audit_status, app.audit_id, audit.version, audit.assignee, audit.assigner,audit.result_org_phone,
+        audit.operator_approver, audit.risk_approver, audit.operator_audit_time, audit.risker_audit_time, operator_audit_status
+        from t_account_application app
+        inner join t_account_app_audit audit on app.id = audit.apply_id
+        where
+        <![CDATA[
+			app.submit_time >= #{beginCreateTime}
+			and app.submit_time <= #{endCreateTime}
+		]]>
+        and app.audit_id is not null
+        <if test="null != prodCode">
+            and app.prod_Code = #{prodCode,jdbcType=VARCHAR}
+        </if>
+        <if test="null != isOld">
+            and app.is_old = #{isOld,jdbcType=INTEGER}
+        </if>
+        <if test="null != beginAuditTime">
+            <![CDATA[
+			and audit.operator_audit_time >= #{beginAuditTime,jdbcType=VARCHAR}
+		]]>
+        </if>
+        <if test="null != endAuditTime">
+            <![CDATA[
+			and audit.operator_audit_time <= #{endAuditTime,jdbcType=VARCHAR}
+		]]>
+        </if>
+        <if test="null != province">
+            and app.province = #{province,jdbcType=VARCHAR}
+        </if>
+        <if test="null != name">
+            and app.name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="null != mobile">
+            and app.mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="null != auditStatus">
+            and audit.audit_status = #{auditStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="null != taskStatus">
+            and audit.task_status = #{taskStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="null != finishedFirstCall">
+            <choose>
+                <when test='"Y" == finishedFirstCall'>
+                    and audit.first_call_time is not null
+                </when>
+                <when test='"N" == finishedFirstCall'>
+                    and audit.first_call_time is null
+                </when>
+            </choose>
+        </if>
+        <if test="null != ownerId">
+            and audit.owner_id = #{ownerId,jdbcType=VARCHAR}
+        </if>
+        <if test="null != userList">
+            and app.user_id in
+            <foreach collection="userList" item="user" open="(" close=")" separator=",">
+                #{user.uid}
+            </foreach>
+        </if>
+        <if test="null != execudeRecords">
+            and app.id not in
+            <foreach collection="execudeRecords" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+        <if test="null != operatorAuditStatus">
+            and audit.operator_audit_status = #{operatorAuditStatus, jdbcType=VARCHAR}
+        </if>
+        <if test="null != prodCode">
+            and app.prod_code = #{prodCode, jdbcType=VARCHAR}
+        </if>
+        order by date_format(app.submit_time, '%Y-%m-%d') desc, date_format(app.submit_time, '%H:%i') asc
+        limit #{beginRow}, #{pageSize}
+    </select>
+
+
+
+    <select id="randomQuestion" resultType="CustomerSecurityQuestion">
+        select * from t_customer_security_question q
+        where not exists(
+        select * from t_customer_security_answer a
+        where q.id = a.question_id
+        and a.user_id = #{userId}
+        )
+        order by rand()
+        limit 1
+    </select>
+</mapper>

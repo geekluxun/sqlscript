@@ -79,4 +79,31 @@ SELECT COUNT(*) FROM t_user_registry_log a
         AND EXISTS (SELECT 1 FROM t_customer_sub_account c WHERE b.customer_id = c.user_id AND c.product_code = 'YKQJ');
 
 
+
+SELECT req_eoid, req_orderId, prodOrderId,createTime,updateTime,result FROM t_elect_req_order_bak WHERE result LIKE '%重复下单%' ORDER BY createTime DESC ;
+
+
+SELECT * FROM t_elect_req_order WHERE prodOrderId= 201709281166784 ORDER BY createTime DESC ;
+
+SELECT * FROM t_elect_req_order WHERE  prodOrderId = 201709281166784;
+
+
+SELECT * FROM t_elect_req_order WHERE req_orderId = '201709281166784';
+
+USE base;
+USE mall;
+
+
+SELECT * FROM xx_order WHERE  sn = '201709281166784';
+
 ######################### base库 end!!! #####################
+
+
+
+
+######################### mall库 start!!! #####################
+USE mall;
+SHOW  CREATE TABLE t_audit_order;
+
+
+######################### mall库 end!!! #####################

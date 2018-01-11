@@ -7,7 +7,7 @@ ADD UNIQUE INDEX `invitation_code_UNIQUE` (`invitation_code` ASC);
 
 CREATE DEFINER=`base`@`%` FUNCTION `generateInvitationCode`() RETURNS varchar(10) CHARSET utf8mb4
 BEGIN
-         declare i_code varchar(10);
+    declare i_code varchar(10);
     declare i_count int;
 
     set i_code = concat('CXY', floor(100000+rand()*(999999-100000+1)));
