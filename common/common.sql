@@ -82,11 +82,36 @@ SHOW VARIABLES LIKE 'slow_query_log%';
 SHOW VARIABLES LIKE 'log_bin%';
 #查看当前的binlog日志
 show master status;
+show slave status ;
 
 #mysqldumpslow 命令
 #mysqlbinlog 命令
 
 #mysqlbinlog --no-defaults mysql-bin.000004
+
+# 查询剖析
+show profiles ;
+show  variables  like  'profil%';
+# 查看句柄计数器
+show status  where Variable_name like  'handler%';
+show global status  where Variable_name like  'handler%';
+
+# 查看当前所有连接线程
+show processlist ;
+
+check table dd;
+optimize  table  dd;
+
+show master status ;
+show slave status ;
+
+flush logs ;
+
+
+show status  where Variable_name like 'thread%';
+
+
+
 
 ######################### 通用指令 end!!! #####################
 
